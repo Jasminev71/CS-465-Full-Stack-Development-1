@@ -11,6 +11,20 @@
     "express": "^4.22.1",
     "hbs": "^4.2.0",
     "http-errors": "~1.6.3",
+    "mongoose": "^9.1.5",
     "morgan": "^1.10.1"
-  }
+  },
+  "description": "",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jasminev71/CS-465-Full-Stack-Development-1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jasminev71/CS-465-Full-Stack-Development-1/issues"
+  },
+  "homepage": "https://github.com/Jasminev71/CS-465-Full-Stack-Development-1#readme"
 }
