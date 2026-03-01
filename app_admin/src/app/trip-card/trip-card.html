@@ -23,5 +23,15 @@
     <div>
         <button (click)="editTrip(trip)" class="btn btn-info">Edit Trip</button>
     </div>
+
+    <button class="btn btn-warning" *ngIf="isLoggedIn()" (click)="editTrip(trip)">
+  Edit Trip
+</button>
+
+<button (click)="addTrip()"
+        class="btn btn-info"
+        *ngIf="isLoggedIn()">
+  Add Trip
+</button>
   </div>
 </div>
