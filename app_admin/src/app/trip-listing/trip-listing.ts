@@ -1,45 +1,70 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 
-import { TripDataService } from '../services/trip-data';
-import { Trip } from '../models/trip';
 import { TripCardComponent } from '../trip-card/trip-card';
+import { Trip } from '../models/trip';
+import { TripDataService } from '../services/trip-data';
+
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-trip-listing',
   standalone: true,
   imports: [CommonModule, TripCardComponent],
   templateUrl: './trip-listing.html',
-  styleUrls: ['./trip-listing.css'],
+  styleUrls: ['./trip-listing.component.css'],
+  providers: [TripDataService]
 })
 export class TripListingComponent implements OnInit {
+
   trips: Trip[] = [];
-  submitted = false;
-  message = '';
+  message: string = '';
 
   constructor(
     private tripDataService: TripDataService,
     private router: Router
-  ) {}
+  ) {
+    console.log('trip-listing constructor');
+  }
 
-  ngOnInit(): void {
+  public addTrip(): void {
+    this.router.navigate(['add-trip']);
+  }
+
+  private getStuff(): void {
     this.tripDataService.getTrips().subscribe({
-      next: (value: Trip[]) => {
-        this.trips = value ?? [];
-        this.message = this.trips.length
-          ? `There are ${this.trips.length} trips available.`
-          : 'There were no trips retrieved from the database';
+      next: (value: any) => {
+        console.log('Trips payload:', value);
+
+        // If API returns an array:
+        if (Array.isArray(value)) {
+          this.trips = value;
+        }
+        // If API returns { trips: [...] }
+        else if (value?.trips && Array.isArray(value.trips)) {
+          this.trips = value.trips;
+        }
+        // Fallback
+        else {
+          this.trips = [];
+        }
+
+        if (this.trips.length > 0) {
+          this.message = `There are ${this.trips.length} trips available.`;
+        } else {
+          this.message = 'There were no trips retrieved from the database';
+        }
+
         console.log(this.message);
       },
       error: (error: any) => {
-        console.error('Trip API error:', error);
-        this.message = 'Error retrieving trips (see console)';
+        console.log('Error: ', error);
       }
     });
   }
 
-  addTrip(): void {
-    this.router.navigate(['add-trip']);
+  ngOnInit(): void {
+    console.log('ngOnInit');
+    this.getStuff();
   }
 }
